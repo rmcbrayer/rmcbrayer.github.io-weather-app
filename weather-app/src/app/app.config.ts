@@ -22,7 +22,7 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: Aura,
         options: {
-          // darkModeSelector: '.my-app-dark'
+          darkModeSelector: false || 'none'
         }
       }
     })
