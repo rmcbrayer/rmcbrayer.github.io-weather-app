@@ -1,0 +1,63 @@
+ <section class="landing">
+  <img src='/skyline_temporary.PNG' />
+  <div class="header">
+    <div class="title">{{ isLandingStateLogin ? loginHeader.title : registerHeader.title }}</div>
+    <div>{{ isLandingStateLogin ? loginHeader.subTitle : registerHeader.subTitle }}</div>
+  </div>
+  <div class="form">
+    <p-floatlabel variant="on">
+      <input
+        pInputText
+        id="email_label"
+        [(ngModel)]="email"
+        autocomplete="on" />
+      <label for="email_label">Email</label>
+    </p-floatlabel>
+    <p-floatlabel variant="on">
+      <p-password
+        id="password_label"
+        [(ngModel)]="password"
+        (ngModelChange)="onPasswordChange()"
+        [toggleMask]="true"
+        autocomplete="on" />
+      <label for="password_label">Password</label>
+    </p-floatlabel>
+    @if (!isLandingStateLogin) {
+      <p-floatlabel class="confirm" variant="on">
+        <p-password
+          id="confirmPassword_label"
+          [(ngModel)]="confirmPassword"
+          (ngModelChange)="onPasswordChange()"
+          [toggleMask]="true"
+          autocomplete="on" />
+        <label for="confirmPassword_label">Confirm Password</label>
+      </p-floatlabel>
+      @if (isShowPasswordMatch && !isPasswordMatch) {
+        <p-message
+          severity="error"
+          variant="simple"
+          size="small">Password does not match
+        </p-message>
+      }
+    }
+  </div>
+  <div class="footer">
+    <p-button
+      class="submit"
+      (onClick)="onSubmit()">
+      {{ isLandingStateLogin ? loginHeader.submit : registerHeader.submit }}
+    </p-button>
+    <div>
+      {{ isLandingStateLogin ? loginHeader.account : registerHeader.account }}
+      <span>
+        <p-button
+          [link]="true"
+          (onClick)="onToggleForm()">
+          {{ isLandingStateLogin ? loginHeader.link : registerHeader.link }}
+        </p-button>
+      </span>
+    </div>
+  </div>
+  <div class="developer">Note: This is a personal project that is on-going. Check back periodically for updates.</div>
+  <p-toast />
+</section>

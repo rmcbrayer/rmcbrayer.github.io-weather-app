@@ -1,0 +1,66 @@
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.landing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+/*
+  TODO: update the img style to fit the device screen resolution
+*/
+img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.title {
+  font-weight: 600;
+  font-size: x-large;
+}
+
+input {
+  width: 100%;
+}
+
+p-floatlabel {
+  margin-top: 0.8rem;
+}
+
+p-floatlabel:is(:last-of-type) {
+  margin-bottom: 0.8rem;
+}
+
+p-floatlabel.confirm {
+  display: flex;
+  flex-direction: column;
+  color: red;
+  gap: 0.4rem;
+}
+
+p-button.submit {
+  display: block;
+  width: 100%;
+
+  ::ng-deep button {
+    width: inherit;
+  }
+}
+
+.developer {
+  font-size: small;
+  text-wrap: wrap;
+  text-align: center;
+}

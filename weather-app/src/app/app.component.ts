@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LoginComponent } from './features/login/login/login.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { LandingComponent } from "./features/landing/landing.component";
 
 type DeviceOrientation = 'isTabletPortrait' | 'isTabletLandscape' | 'isHandsetPortrait' | 'isHandsetLandscape';
 
@@ -9,8 +9,8 @@ type DeviceOrientation = 'isTabletPortrait' | 'isTabletLandscape' | 'isHandsetPo
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    LoginComponent
-  ],
+    LandingComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
