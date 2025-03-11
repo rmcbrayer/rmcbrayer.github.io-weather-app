@@ -1,9 +1,3 @@
-:host {
-  display: block;
-  height: 100%;
-  width: 100%;
-}
-
 .landing {
   display: flex;
   flex-direction: column;
@@ -11,11 +5,9 @@
   gap: 1.2rem;
 }
 
-/*
-  TODO: update the img style to fit the device screen resolution
-*/
 img {
-  width: 100%;
+  width: 22rem;
+  height: 15rem;
   object-fit: cover;
 }
 
@@ -48,6 +40,21 @@ p-floatlabel.confirm {
   flex-direction: column;
   color: red;
   gap: 0.4rem;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 14rem;
+}
+
+.footer-text {
+  font-size: small;
+
+  ::ng-deep button {
+    font-size: small;
+  }
 }
 
 p-button.submit {
