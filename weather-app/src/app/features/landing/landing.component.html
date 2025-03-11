@@ -1,5 +1,5 @@
  <section class="landing">
-  <img src='/skyline_temporary.PNG' />
+  <img src='skyline_temporary.PNG' />
   <div class="header">
     <div class="title">{{ isLandingStateLogin ? loginHeader.title : registerHeader.title }}</div>
     <div>{{ isLandingStateLogin ? loginHeader.subTitle : registerHeader.subTitle }}</div>
@@ -47,7 +47,7 @@
       (onClick)="onSubmit()">
       {{ isLandingStateLogin ? loginHeader.submit : registerHeader.submit }}
     </p-button>
-    <div>
+    <div class="footer-text">
       {{ isLandingStateLogin ? loginHeader.account : registerHeader.account }}
       <span>
         <p-button
@@ -58,6 +58,6 @@
       </span>
     </div>
   </div>
-  <div class="developer">Note: This is a personal project that is on-going. Check back periodically for updates.</div>
+  <div class="developer">Note: This is an on-going personal project. Check back periodically for updates.</div>
   <p-toast />
 </section>
