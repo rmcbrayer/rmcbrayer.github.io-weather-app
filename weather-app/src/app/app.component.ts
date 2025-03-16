@@ -2,6 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { LandingComponent } from "./features/landing/landing.component";
+import { User } from './shared/models/user.model';
+import { getAuth, onAuthStateChanged } from '@firebase/auth';
 
 type DeviceOrientation = 'isTabletPortrait' | 'isTabletLandscape' | 'isHandsetPortrait' | 'isHandsetLandscape';
 
@@ -15,6 +17,9 @@ type DeviceOrientation = 'isTabletPortrait' | 'isTabletLandscape' | 'isHandsetPo
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
+  // Currently signed in user
+  public user: User | undefined;
+
   // Responsive design variables
   private breakpointObserver = inject(BreakpointObserver);
   public deviceResponsive: Record<DeviceOrientation, boolean> = {
@@ -27,6 +32,15 @@ export class AppComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    // Listen for user changes
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user)
+        this.user = user; // Signed in
+      else
+        this.user = undefined; // Signed out
+    });
+
     // Breakpoint observer allows responsive design based on the client's device and screen size without
     // having to manually code the media queries
     this.breakpointObserver.observe([

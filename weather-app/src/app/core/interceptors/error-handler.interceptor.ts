@@ -14,7 +14,7 @@ export const errorHandlerInterceptor: HttpInterceptorFn = (req, next) => {
         console.log('Resource not found');
       }
       else if (error.status === 429 && error.url?.includes(environment.weatherApiUrl)) {
-        console.log('API limit exceeded');
+        console.log('Weather API limit exceeded');
       }
       else if (error.status === 500) {
         console.log('Internal server error');

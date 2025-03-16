@@ -121,8 +121,7 @@ export class LandingComponent {
    * For existing account, validate the entered email and password.
    * 
    * TODO: call this function on enter key from keyboard
-   * TODO: hash and salt the password, store along with email in database
-   * TODO: store user in session storage
+   * TODO: store user in local storage
    * TODO: reset fields
    */
   public onSubmit(): void {

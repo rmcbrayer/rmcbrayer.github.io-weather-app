@@ -8,6 +8,9 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { apiUrlInterceptor } from './core/interceptors/api-url.interceptor';
 import { errorHandlerInterceptor } from './core/interceptors/error-handler.interceptor';
+import { environment } from '../environments/environment';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,6 +28,8 @@ export const appConfig: ApplicationConfig = {
           darkModeSelector: false || 'none'
         }
       }
-    })
+    }),
+    provideAuth(() => getAuth()),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig))
   ]
 };
