@@ -7,6 +7,9 @@ import { ButtonModule } from 'primeng/button';
 import { Message } from 'primeng/message';
 import { Toast } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { Router } from '@angular/router';
+import { FirebaseError } from 'firebase/app';
 
 enum LandingStates {
   Login = 'Login',
@@ -43,6 +46,9 @@ export class LandingComponent {
 
   // Message service for Toast notifications
   private messageService = inject(MessageService);
+
+  // Authentication service for user login/register
+  private authenticationService = inject(AuthenticationService);
 
   // All the available landing states
   public landingStates = LandingStates;
@@ -81,7 +87,9 @@ export class LandingComponent {
   // True if the password and confirmPassword match for registering a new user
   public isPasswordMatch: boolean | undefined;
 
-  constructor() {}
+  constructor(
+    private router: Router
+  ) {}
 
   /**
    * @description Check if the entered password and confirmPassword match when a new user
@@ -101,10 +109,7 @@ export class LandingComponent {
    */
   public onToggleForm(): void {
     // Reset the input fields
-    this.email = '';
-    this.password = '';
-    this.confirmPassword = '';
-    this.isShowPasswordMatch = false;
+    this.resetInputFields();
 
     // Update the landing state to match the form to be shown
     this.landingState = this.landingState === this.landingStates.Login ?
@@ -117,14 +122,56 @@ export class LandingComponent {
 
   /**
    * @description User wants to submit the current form displayed, so process the request.
-   * For new accounts, we will hash and salt the password and store along with email.
-   * For existing account, validate the entered email and password.
-   * 
-   * TODO: call this function on enter key from keyboard
-   * TODO: store user in local storage
-   * TODO: reset fields
+   * If successful, navigate to layout and reset input fields.
    */
-  public onSubmit(): void {
-    this.messageService.add({ severity: 'warn', summary: 'Oops', detail: 'I love your enthusiasm, but this part is not ready yet!', life: 3000 });
+  public async onSubmit(): Promise<void> {
+    switch (this.landingState) {
+      case this.landingStates.Login:
+        if (this.email && this.password) {
+          // User login and then navigate to layout
+          this.authenticationService.signInWithEmailAndPassword(this.email, this.password)
+            .then((user) => {
+              this.router.navigateByUrl('/layout');
+              this.resetInputFields();
+            })
+            .catch((error) => {
+              if (error instanceof FirebaseError)
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
+            }
+          );
+        }
+        else
+          this.messageService.add({ severity: 'warn', summary: 'Warn', detail: `Please fill in all the required fields`, life: 3000 });
+        break;
+      case this.landingStates.Register:
+        if (this.email && this.password && this.isPasswordMatch) {
+          // New user registration, login, and then navigate to layout
+          this.authenticationService.createUserWithEmailAndPassword(this.email, this.password)
+            .then((user) => {
+              this.router.navigateByUrl('/layout');
+              this.resetInputFields();
+            })
+            .catch((error) => {
+              if (error instanceof FirebaseError)
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
+            });
+        }
+        else
+          this.messageService.add({ severity: 'warn', summary: 'Warn', detail: `Please fill in all the required fields`, life: 3000 });
+        break;
+      default:
+        this.messageService.add({ severity: 'Error', summary: 'Error', detail: `Landing State: ${this.landingState} is not valid`, life: 3000 });
+        return;
+    }
+  }
+
+  /**
+   * @description Reset input fields back to their default
+   */
+  private resetInputFields(): void {
+    this.email = '';
+    this.password = '';
+    this.confirmPassword = '';
+    this.isShowPasswordMatch = false;
   }
 }
