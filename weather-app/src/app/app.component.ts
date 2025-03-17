@@ -1,20 +1,24 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { LandingComponent } from "./features/landing/landing.component";
+import { initializeApp } from "firebase/app";
+import { Auth, getAuth, onAuthStateChanged } from 'firebase/auth';
+import { environment } from '../environments/environment';
 
 type DeviceOrientation = 'isTabletPortrait' | 'isTabletLandscape' | 'isHandsetPortrait' | 'isHandsetLandscape';
 
 @Component({
   selector: 'app-root',
   imports: [
-    RouterOutlet,
-    LandingComponent
+    RouterOutlet
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
+  // Firebase Authentication
+  private auth: Auth | undefined;
+
   // Responsive design variables
   private breakpointObserver = inject(BreakpointObserver);
   public deviceResponsive: Record<DeviceOrientation, boolean> = {
@@ -24,9 +28,23 @@ export class AppComponent implements OnInit {
     'isHandsetLandscape': false
   };
 
-  constructor() {}
+  constructor(
+    private router: Router
+  ) {
+    // Initialize Firebase
+    const app = initializeApp(environment.firebaseConfig);
+    // Initialize Firebase Authentication
+    this.auth = getAuth(app);
+  }
 
   ngOnInit(): void {
+    // If there is an authenticated user upon loading application, then navigate to layout
+    if (this.auth)
+      onAuthStateChanged(this.auth, (user) => {
+        if (user) // Signed in
+          this.router.navigateByUrl('/layout');
+      });
+
     // Breakpoint observer allows responsive design based on the client's device and screen size without
     // having to manually code the media queries
     this.breakpointObserver.observe([

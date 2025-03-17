@@ -4,7 +4,7 @@
     <div class="title">{{ isLandingStateLogin ? loginHeader.title : registerHeader.title }}</div>
     <div>{{ isLandingStateLogin ? loginHeader.subTitle : registerHeader.subTitle }}</div>
   </div>
-  <div class="form">
+  <div class="form" (keydown.enter)="onSubmit()">
     <p-floatlabel variant="on">
       <input
         pInputText
